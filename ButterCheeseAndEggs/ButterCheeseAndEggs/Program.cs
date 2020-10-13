@@ -10,6 +10,8 @@ namespace ButterCheeseAndEggs
             while(true)
             {
                 x -= -1;
+                Console.WriteLine("fdsfds");
+                Console.WriteLine("fdsfdsfds");
             }
         }
     }
