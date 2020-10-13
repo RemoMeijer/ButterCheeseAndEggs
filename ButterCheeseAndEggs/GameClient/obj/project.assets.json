@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Documents\\Avans\\2.1\\C# Programmeren\\Eindproject\\ButterCheeseAndEggs\\ButterCheeseAndEggs\\ButterCheeseAndEggs\\ButterCheeseAndEggs.csproj",
-      "projectName": "ButterCheeseAndEggs",
-      "projectPath": "D:\\Documents\\Avans\\2.1\\C# Programmeren\\Eindproject\\ButterCheeseAndEggs\\ButterCheeseAndEggs\\ButterCheeseAndEggs\\ButterCheeseAndEggs.csproj",
+      "projectUniqueName": "D:\\Documents\\Avans\\2.1\\C# Programmeren\\Eindproject\\ButterCheeseAndEggs\\ButterCheeseAndEggs\\GameClient\\GameClient.csproj",
+      "projectName": "GameClient",
+      "projectPath": "D:\\Documents\\Avans\\2.1\\C# Programmeren\\Eindproject\\ButterCheeseAndEggs\\ButterCheeseAndEggs\\GameClient\\GameClient.csproj",
       "packagesPath": "C:\\Users\\Samir\\.nuget\\packages\\",
-      "outputPath": "D:\\Documents\\Avans\\2.1\\C# Programmeren\\Eindproject\\ButterCheeseAndEggs\\ButterCheeseAndEggs\\ButterCheeseAndEggs\\obj\\",
+      "outputPath": "D:\\Documents\\Avans\\2.1\\C# Programmeren\\Eindproject\\ButterCheeseAndEggs\\ButterCheeseAndEggs\\GameClient\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Samir\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -56,6 +56,9 @@
         "frameworkReferences": {
           "Microsoft.NETCore.App": {
             "privateAssets": "all"
+          },
+          "Microsoft.WindowsDesktop.App.WindowsForms": {
+            "privateAssets": "none"
           }
         },
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.401\\RuntimeIdentifierGraph.json"
