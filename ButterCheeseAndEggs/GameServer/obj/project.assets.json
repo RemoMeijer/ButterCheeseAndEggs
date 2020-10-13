@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Documents\\Avans\\2.1\\C# Programmeren\\Eindproject\\ButterCheeseAndEggs\\ButterCheeseAndEggs\\ButterCheeseAndEggs\\ButterCheeseAndEggs.csproj",
-      "projectName": "ButterCheeseAndEggs",
-      "projectPath": "D:\\Documents\\Avans\\2.1\\C# Programmeren\\Eindproject\\ButterCheeseAndEggs\\ButterCheeseAndEggs\\ButterCheeseAndEggs\\ButterCheeseAndEggs.csproj",
+      "projectUniqueName": "D:\\Documents\\Avans\\2.1\\C# Programmeren\\Eindproject\\ButterCheeseAndEggs\\ButterCheeseAndEggs\\GameServer\\GameServer.csproj",
+      "projectName": "GameServer",
+      "projectPath": "D:\\Documents\\Avans\\2.1\\C# Programmeren\\Eindproject\\ButterCheeseAndEggs\\ButterCheeseAndEggs\\GameServer\\GameServer.csproj",
       "packagesPath": "C:\\Users\\Samir\\.nuget\\packages\\",
-      "outputPath": "D:\\Documents\\Avans\\2.1\\C# Programmeren\\Eindproject\\ButterCheeseAndEggs\\ButterCheeseAndEggs\\ButterCheeseAndEggs\\obj\\",
+      "outputPath": "D:\\Documents\\Avans\\2.1\\C# Programmeren\\Eindproject\\ButterCheeseAndEggs\\ButterCheeseAndEggs\\GameServer\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Samir\\AppData\\Roaming\\NuGet\\NuGet.Config",
