@@ -75,98 +75,130 @@ namespace GameClient
             waitingLabel.Text = "Opponent: " + opponentUsername + "  |  Team: " + team;
         }
 
-        #region coordinateHandling
-        public void sendCoordinate(int x, int y)
+        public void setTurnLabel(string text)
         {
-            if(this.client.inGame == true && this.client.turn == true)
+            turnLabel.Text = text;
+        }
+
+        public void setUsername(string username)
+        {
+            usernameLabel.Text = "Username: " + username;
+        }
+
+        #region coordinateHandling
+        public void setCoordinate(string coords, string team)
+        {
+            if(this.client.inGame == true)
             {
-                string coords = x + "" + y;
-                if (this.client.coordinates[coords] = false)
+                Console.WriteLine(this.client.coordinates[coords]+"AAAA");
+                if (this.client.coordinates[coords] == false)
                 {
+                    Console.WriteLine("2");
                     this.client.coordinates[coords] = true;
-                    inputSet(coords);
+                    inputSet(coords,team);
                 }
             }
         }
 
-        public void inputSet(string input)
+        public void setOwnCoordinate(string coords, string team)
+        {
+            if (this.client.turn == true)
+                setCoordinate(coords, team);
+        }
+
+        public void inputSet(string input, string team)
         {
             switch (input)
             {
                 case "11":
-                    labelx1y1.Text = client.teamString;
+                    labelx1y1.Text = team;
+                    sendCoordinate(input, team);
                     break;
                 case "12":
-                    labelx1y2.Text = client.teamString;
+                    labelx1y2.Text = team;
+                    sendCoordinate(input, team);
                     break;
                 case "13":
-                    labelx1y3.Text = client.teamString;
+                    labelx1y3.Text = team;
+                    sendCoordinate(input, team);
                     break;
                 case "21":
-                    labelx2y1.Text = client.teamString;
+                    labelx2y1.Text = team;
+                    sendCoordinate(input, team);
                     break;
                 case "22":
-                    labelx2y2.Text = client.teamString;
+                    labelx2y2.Text = team;
+                    sendCoordinate(input, team);
                     break;
                 case "23":
-                    labelx2y3.Text = client.teamString;
+                    labelx2y3.Text = team;
+                    sendCoordinate(input, team);
                     break;
                 case "31":
-                    labelx3y1.Text = client.teamString;
+                    labelx3y1.Text = team;
+                    sendCoordinate(input, team);
                     break;
                 case "32":
-                    labelx3y2.Text = client.teamString;
+                    labelx3y2.Text = team;
+                    sendCoordinate(input, team);
                     break;
                 case "33":
-                    labelx3y3.Text = client.teamString;
+                    labelx3y3.Text = team;
+                    sendCoordinate(input, team);
                     break;
 
             }
         }
 
+        public void sendCoordinate(string input, string team)
+        {
+            if(this.client.turn == true)
+                this.client.Send(Client.coordinateCode, input + team);
+        }
+
         private void x1y1_Click(object sender, EventArgs e)
         {
-            sendCoordinate(1, 1);
+            setOwnCoordinate("11",this.client.teamString);
         }
 
         private void x1y2_Click(object sender, EventArgs e)
         {
-            sendCoordinate(1, 2);
+            setOwnCoordinate("12", this.client.teamString);
         }
 
         private void x1y3_Click(object sender, EventArgs e)
         {
-            sendCoordinate(1, 3);
+            setOwnCoordinate("13", this.client.teamString);
         }
 
         private void x2y1_Click(object sender, EventArgs e)
         {
-            sendCoordinate(2, 1);
+            setOwnCoordinate("21", this.client.teamString);
         }
 
         private void x2y2_Click(object sender, EventArgs e)
         {
-            sendCoordinate(2, 2);
+            setOwnCoordinate("22", this.client.teamString);
         }
 
         private void x2y3_Click(object sender, EventArgs e)
         {
-            sendCoordinate(2, 3);
+            setOwnCoordinate("23", this.client.teamString);
         }
 
         private void x3y1_Click(object sender, EventArgs e)
         {
-            sendCoordinate(3, 1);
+            setOwnCoordinate("31", this.client.teamString);
         }
 
         private void x3y2_Click(object sender, EventArgs e)
         {
-            sendCoordinate(3, 2);
+            setOwnCoordinate("32", this.client.teamString);
         }
 
         private void x3y3_Click(object sender, EventArgs e)
         {
-            sendCoordinate(3, 3);
+            setOwnCoordinate("33", this.client.teamString);
         }
         #endregion
     }

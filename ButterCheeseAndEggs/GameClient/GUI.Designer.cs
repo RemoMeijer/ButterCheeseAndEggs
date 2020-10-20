@@ -57,6 +57,7 @@
             this.labelx3y1 = new System.Windows.Forms.Label();
             this.labelx3y2 = new System.Windows.Forms.Label();
             this.labelx3y3 = new System.Windows.Forms.Label();
+            this.turnLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -243,7 +244,7 @@
             this.x3y2.BackColor = System.Drawing.SystemColors.ControlDarkDark;
             this.x3y2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.x3y2.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.x3y2.Location = new System.Drawing.Point(586, 423);
+            this.x3y2.Location = new System.Drawing.Point(583, 423);
             this.x3y2.Name = "x3y2";
             this.x3y2.Size = new System.Drawing.Size(158, 151);
             this.x3y2.TabIndex = 9;
@@ -363,12 +364,23 @@
             this.labelx3y3.Size = new System.Drawing.Size(0, 133);
             this.labelx3y3.TabIndex = 12;
             // 
+            // turnLabel
+            // 
+            this.turnLabel.AutoSize = true;
+            this.turnLabel.Font = new System.Drawing.Font("Segoe UI", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.turnLabel.Location = new System.Drawing.Point(603, 602);
+            this.turnLabel.Name = "turnLabel";
+            this.turnLabel.Size = new System.Drawing.Size(0, 37);
+            this.turnLabel.TabIndex = 13;
+            this.turnLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // GUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlDarkDark;
             this.ClientSize = new System.Drawing.Size(1347, 662);
+            this.Controls.Add(this.turnLabel);
             this.Controls.Add(this.labelx3y3);
             this.Controls.Add(this.labelx3y2);
             this.Controls.Add(this.labelx3y1);
@@ -435,5 +447,6 @@
         private System.Windows.Forms.Label labelx3y1;
         private System.Windows.Forms.Label labelx3y2;
         private System.Windows.Forms.Label labelx3y3;
+        private System.Windows.Forms.Label turnLabel;
     }
 }

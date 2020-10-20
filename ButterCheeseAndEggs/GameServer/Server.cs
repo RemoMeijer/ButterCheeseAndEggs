@@ -126,9 +126,17 @@ namespace GameServer
             {
                 ServerClient client1 =  this.clientsInQueue[0];
                 ServerClient client2 =  this.clientsInQueue[1];
+                Game game = new Game(client1,client2);
 
-                client1.Send(ServerClient.inGameCode, "O" + this.IDandUsername[client2.getID()]);
-                client2.Send(ServerClient.inGameCode, "X" + this.IDandUsername[client1.getID()]);
+
+                client1.Send(ServerClient.inGameCode, "X" + this.IDandUsername[client2.getID()]);
+                client2.Send(ServerClient.inGameCode, "O" + this.IDandUsername[client1.getID()]);
+
+                client1.setGame(game);
+                client2.setGame(game);
+
+                client1.Send(ServerClient.turnCode, "true");
+                client2.Send(ServerClient.turnCode, "false");
 
                 this.clientsInQueue.Clear();
             }

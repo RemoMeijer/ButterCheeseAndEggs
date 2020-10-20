@@ -22,6 +22,8 @@ namespace GameServer
         public static string idCode = "IDEN";
         public static string inGameCode = "STIG";
         public static string turnCode = "STTN";
+        public static string coordinateCode = "CRDN";
+
 
         public ServerClient(TcpClient client, string ID, Server server)
         {
@@ -74,7 +76,7 @@ namespace GameServer
                             disconnect();
                             break;
                         case "CRDN":
-
+                            setCoords(message);
                             break;
                     }
                 
@@ -93,6 +95,16 @@ namespace GameServer
         public string getID()
         {
             return this.ID;
+        }
+
+        public void setCoords(string message)
+        {
+            string coords = message.Substring(0, 2);
+            int x = Int32.Parse(message.Substring(0, 1));
+            int y = Int32.Parse(message.Substring(1, 1));
+            string team = message.Substring(2, 1);
+            
+            this.game.sendCoord(this,message);
         }
 
         public void setGame(Game game)

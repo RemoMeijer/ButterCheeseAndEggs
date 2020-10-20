@@ -26,7 +26,7 @@ namespace GameClient
         public static string chatmessageCode = "CHMS";
         public static string usernameCode = "USRN";
         public static string disconnectCode = "DCNT";
-        public static string sendCoordinate = "CRDN";
+        public static string coordinateCode = "CRDN";
 
         public static void Main(string[] args)
         {
@@ -79,6 +79,7 @@ namespace GameClient
         public void start(string username)
         {
             this.username = username;
+            this.GUI.setUsername(username);
 
             Thread GUIThread = new Thread(startGUI);
             GUIThread.Start();
@@ -135,6 +136,9 @@ namespace GameClient
                         case "STTN":
                             setTurn(message);
                             break;
+                        case "CRDN":
+                            setCoord(message);
+                            break;
                         
                     }
 
@@ -159,14 +163,25 @@ namespace GameClient
 
         }
 
+        public void setCoord(string message)
+        {
+            string coords = message.Substring(0, 2);
+            string team = message.Substring(2, 1);
+            this.GUI.setCoordinate(coords, team);
+        }
+
         public void setTurn(string turnString)
         {
+            Console.WriteLine(turnString);
             if(turnString == "true")
             {
                 this.turn = true;
+                this.GUI.setTurnLabel("Your turn!");
             }else
             {
                 this.turn = false;
+                this.GUI.setTurnLabel("Opponent's turn");
+
             }
         }
 

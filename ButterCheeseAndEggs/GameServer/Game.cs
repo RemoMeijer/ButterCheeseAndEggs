@@ -13,9 +13,15 @@ namespace GameServer
         private Boolean gameWon;
         private int[][] player1Coordinates;
         private int[][] player2Coordinates;
+        private ServerClient player1;
+        private ServerClient player2;
 
-        public Game()
+
+
+        public Game(ServerClient player1, ServerClient player2)
         {
+            this.player1 = player1;
+            this.player2 = player2;
             turn = 0;
             player1Turn = true;
             player2Turn = false;
@@ -35,7 +41,25 @@ namespace GameServer
             }
         }
 
-        public Boolean[] recieve(int[] newCoords)
+        public void sendCoord(ServerClient client, string message) 
+        {
+            if(player1 != client)
+            {
+                player1.Send(ServerClient.coordinateCode, message);
+                player1.Send(ServerClient.turnCode, "true");
+                player2.Send(ServerClient.turnCode, "false");
+
+            }
+            else
+            {
+                player2.Send(ServerClient.coordinateCode, message);
+                player1.Send(ServerClient.turnCode, "false");
+                player2.Send(ServerClient.turnCode, "true");
+
+            }
+        }
+
+        public Boolean[] receive(int[] newCoords)
         {
             Boolean isUnique = true;
             if (player1Turn)
