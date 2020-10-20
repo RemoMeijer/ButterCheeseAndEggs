@@ -11,22 +11,27 @@ namespace GameClient
     {
 
         private GUI GUI;
+        private EnterUsername enterUsername;
         private String username;
         private TcpClient server;
         private StreamWriter streamWriter;
         private StreamReader streamReader;
         private bool connected;
         private string ID;
+        public string teamString { get; set; }
+        public bool turn { get; set; }
+        public bool inGame { get; set; }
+        public Dictionary<string,bool> coordinates { get; set; }
 
-        private string chatmessageCode = "CHMS";
-
-
-
+        public static string chatmessageCode = "CHMS";
+        public static string usernameCode = "USRN";
+        public static string disconnectCode = "DCNT";
+        public static string sendCoordinate = "CRDN";
 
         public static void Main(string[] args)
         {
             Client client = new Client();
-            client.start();
+            client.login();
         }
         public Client()
         {
@@ -34,20 +39,61 @@ namespace GameClient
             this.streamWriter = new StreamWriter(server.GetStream(), Encoding.ASCII, -1, true);
             this.streamReader = new StreamReader(server.GetStream(), Encoding.ASCII);
             this.connected = true;
-
+            this.inGame = false;
+            this.turn = false;
+            this.coordinates = new Dictionary<string, bool>();
+            fillCoordinates();
+          
         }
 
-        public void start()
+        public void fillCoordinates()
         {
+            int i = 11;
+            for(int b = 0; b < 3; b++)
+            {
+                for (int c = 0; c < 3; c++)
+                {
+
+                    this.coordinates.Add(i + "", false);
+                    i++;
+                }
+                i += 7;
+            }         
+        }
+
+        public void setAllCoordinatesFalse()
+        {
+            foreach (KeyValuePair<string, bool> entry in this.coordinates)
+            {
+                this.coordinates[entry.Key] = false;
+            }
+        }
+
+        public void login()
+        {
+            this.GUI = new GUI(this);
+            Thread enterUsernameThread = new Thread(startEnterUsername);
+            enterUsernameThread.Start();
+        }
+
+        public void start(string username)
+        {
+            this.username = username;
+
             Thread GUIThread = new Thread(startGUI);
             GUIThread.Start();
 
             Receive();           
         }
 
+        public void startEnterUsername()
+        {
+            this.enterUsername = new EnterUsername(this);
+            this.enterUsername.run();
+        }
+
         public void startGUI()
         {
-            this.GUI = new GUI(this);
             this.GUI.run();
         }
 
@@ -56,11 +102,13 @@ namespace GameClient
         {
             if (this.connected != false)
             {
+                Console.WriteLine("ID: " + ID);
                 streamWriter.WriteLine(type+this.ID+message);
                 streamWriter.Flush();
             }
         }
 
+        #region receiving
         public void Receive()
         {
             while (connected)
@@ -75,10 +123,17 @@ namespace GameClient
                     switch (type)
                     {
                         case "CHMS": //chatmessage
-                            this.GUI.addChatMessage(ID+": "+message);
+                            this.GUI.addChatMessage(message);
                             break;
+
                         case "IDEN": //ID set
                             setID(message);
+                            break;
+                        case "STIG":
+                            setInGame(message);
+                            break;
+                        case "STTN":
+                            setTurn(message);
                             break;
                         
                     }
@@ -86,17 +141,55 @@ namespace GameClient
                 }
                 catch(Exception e)
                 {
+                    Console.WriteLine(e.Message);
+                    Console.WriteLine(e.StackTrace);
+
+                    Console.WriteLine("Couldnt connect!");
                     disconnect();
                 }
 
             }
             disconnect();
         }
-
+        #endregion  
         public void setID(string ID)
         {
             this.ID = ID;
-            Console.WriteLine(ID);
+            this.Send(Client.usernameCode, username);
+
+        }
+
+        public void setTurn(string turnString)
+        {
+            if(turnString == "true")
+            {
+                this.turn = true;
+            }else
+            {
+                this.turn = false;
+            }
+        }
+
+        public void setInGame(string message)
+        {
+            if(message == "false")
+            {
+                this.inGame = false;
+            }
+            else
+            {
+                this.inGame = true;
+                setTeam(message);
+            }
+        }
+
+        public void setTeam(string message)
+        {
+            this.teamString = message.Substring(0, 1);
+            string opponentUsername = message.Substring(1);
+            Console.WriteLine(teamString + " "+opponentUsername);
+            this.GUI.setOpponent(teamString, opponentUsername);
+
         }
 
         public void disconnect()

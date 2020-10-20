@@ -10,6 +10,7 @@ namespace GameServer
     class Server
     {
         private List<ServerClient> clients;
+        private List<ServerClient> clientsInQueue;
         private IPAddress localhost;
         private TcpListener listener;
         private List<Thread> clientThreads;
@@ -28,6 +29,7 @@ namespace GameServer
         public Server()
         {
             this.clients = new List<ServerClient>();
+            this.clientsInQueue = new List<ServerClient>();
             this.IDandUsername = new Dictionary<string, string>();
             this.localhost = IPAddress.Parse("127.0.0.1");
             this.listener = new TcpListener(localhost, 1337);
@@ -49,15 +51,19 @@ namespace GameServer
             {
 
                 TcpClient client = listener.AcceptTcpClient();
-                ServerClient serverClient = new ServerClient(client,generateID(),"fsdfds",this);
+                ServerClient serverClient = new ServerClient(client,generateID(),this);
                 this.clients.Add(serverClient);
+                this.clientsInQueue.Add(serverClient);
 
                 Console.WriteLine(serverClient.getID()+" connected");
 
                 Thread thread = new Thread(handleServerClient);
                 thread.Start(serverClient);
+
             }
         }
+
+
 
         #region handling input
         public void handleServerClient(object obj)
@@ -65,15 +71,32 @@ namespace GameServer
             ServerClient serverClient = obj as ServerClient;
             serverClient.Receive();
         }
+
+        public void addUsername(string id, string username)
+        {
+            this.IDandUsername.Add(id, username);
+
+            Console.WriteLine("Username set!");
+
+            createGames();
+
+        }
         #endregion
 
         #region sending 
         public void SendToAllClients(string message, ServerClient serverClient)
         {
+            string key = serverClient.getID();
+            string username = IDandUsername[key];
+
+            string messageToSend = "["+username + "]: " + message;
+
+            Console.WriteLine("Sending to all clients: "+messageToSend);
+
             foreach (ServerClient client in this.clients)
             {
                 if (serverClient != client)
-                    client.Send(this.chatmessageCode, message);
+                    client.Send(ServerClient.chatmessageCode, messageToSend);
             }
         }
         #endregion
@@ -94,6 +117,20 @@ namespace GameServer
                 }
                 if (!taken)
                     return id+"";
+            }
+        }
+
+        public void createGames()
+        {          
+            if(this.clientsInQueue.Count == 2)
+            {
+                ServerClient client1 =  this.clientsInQueue[0];
+                ServerClient client2 =  this.clientsInQueue[1];
+
+                client1.Send(ServerClient.inGameCode, "O" + this.IDandUsername[client2.getID()]);
+                client2.Send(ServerClient.inGameCode, "X" + this.IDandUsername[client1.getID()]);
+
+                this.clientsInQueue.Clear();
             }
         }
         #endregion
