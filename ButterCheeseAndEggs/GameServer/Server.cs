@@ -9,6 +9,7 @@ namespace GameServer
 {
     class Server
     {
+        #region attributes
         private List<ServerClient> clients;
         private List<ServerClient> clientsInQueue;
         private IPAddress localhost;
@@ -16,9 +17,17 @@ namespace GameServer
         private List<Thread> clientThreads;
         private Random random;
         private Dictionary<string, string> IDandUsername;
+        #endregion
 
-        private string disconnectCode = "DCNT";
-        private string chatmessageCode = "CHMS";
+        #region protocol codes
+        public static string disconnectCode = "DCNT";
+        public static string chatmessageCode = "CHMS";
+        public static string idCode = "IDEN";
+        public static string inGameCode = "STIG";
+        public static string turnCode = "STTN";
+        public static string coordinateCode = "CRDN";
+        public static string outcomeCode = "OUTC";
+        #endregion
 
         public static void Main(string[] args)
         {
@@ -26,6 +35,7 @@ namespace GameServer
             server.start();
         }
 
+        #region startup
         public Server()
         {
             this.clients = new List<ServerClient>();
@@ -42,7 +52,9 @@ namespace GameServer
             this.listener.Start();
             AcceptClients();
         }
+        #endregion
 
+        #region accepting clients
         public void AcceptClients()
         {
             Console.WriteLine("Waiting for people to join...");
@@ -62,8 +74,7 @@ namespace GameServer
 
             }
         }
-
-
+        #endregion
 
         #region handling input
         public void handleServerClient(object obj)
@@ -96,7 +107,7 @@ namespace GameServer
             foreach (ServerClient client in this.clients)
             {
                 if (serverClient != client)
-                    client.Send(ServerClient.chatmessageCode, messageToSend);
+                    client.Send(Server.chatmessageCode, messageToSend);
             }
         }
         #endregion
@@ -129,21 +140,18 @@ namespace GameServer
                 Game game = new Game(client1,client2);
 
 
-                client1.Send(ServerClient.inGameCode, "X" + this.IDandUsername[client2.getID()]);
-                client2.Send(ServerClient.inGameCode, "O" + this.IDandUsername[client1.getID()]);
+                client1.Send(Server.inGameCode, "X" + this.IDandUsername[client2.getID()]);
+                client2.Send(Server.inGameCode, "O" + this.IDandUsername[client1.getID()]);
 
                 client1.setGame(game);
                 client2.setGame(game);
 
-                client1.Send(ServerClient.turnCode, "true");
-                client2.Send(ServerClient.turnCode, "false");
+                client1.Send(Server.turnCode, "true");
+                client2.Send(Server.turnCode, "false");
 
                 this.clientsInQueue.Clear();
             }
         }
         #endregion
-
-
-
     }
 }

@@ -9,7 +9,7 @@ namespace GameClient
 {
     public class Client
     {
-
+        #region attributes
         private GUI GUI;
         private EnterUsername enterUsername;
         private String username;
@@ -17,22 +17,30 @@ namespace GameClient
         private StreamWriter streamWriter;
         private StreamReader streamReader;
         private bool connected;
+        private int wins;
+        private int losses;
+        private int ties;
         private string ID;
         public string teamString { get; set; }
         public bool turn { get; set; }
         public bool inGame { get; set; }
         public Dictionary<string,bool> coordinates { get; set; }
+        #endregion
 
+        #region protocol codes
         public static string chatmessageCode = "CHMS";
         public static string usernameCode = "USRN";
         public static string disconnectCode = "DCNT";
         public static string coordinateCode = "CRDN";
+        #endregion
 
         public static void Main(string[] args)
         {
             Client client = new Client();
             client.login();
         }
+
+        #region startup
         public Client()
         {
             this.server = new TcpClient("127.0.0.1", 1337);
@@ -42,31 +50,11 @@ namespace GameClient
             this.inGame = false;
             this.turn = false;
             this.coordinates = new Dictionary<string, bool>();
+            this.wins = 0;
+            this.losses = 0;
+            this.ties = 0;
             fillCoordinates();
           
-        }
-
-        public void fillCoordinates()
-        {
-            int i = 11;
-            for(int b = 0; b < 3; b++)
-            {
-                for (int c = 0; c < 3; c++)
-                {
-
-                    this.coordinates.Add(i + "", false);
-                    i++;
-                }
-                i += 7;
-            }         
-        }
-
-        public void setAllCoordinatesFalse()
-        {
-            foreach (KeyValuePair<string, bool> entry in this.coordinates)
-            {
-                this.coordinates[entry.Key] = false;
-            }
         }
 
         public void login()
@@ -97,19 +85,19 @@ namespace GameClient
         {
             this.GUI.run();
         }
+        #endregion
 
-
+        #region receiving and sending
         public void Send(string type, string message)
         {
             if (this.connected != false)
             {
-                Console.WriteLine("ID: " + ID);
                 streamWriter.WriteLine(type+this.ID+message);
                 streamWriter.Flush();
             }
         }
 
-        #region receiving
+        
         public void Receive()
         {
             while (connected)
@@ -139,6 +127,9 @@ namespace GameClient
                         case "CRDN":
                             setCoord(message);
                             break;
+                        case "OUTC":
+                            setOutcome(message);
+                            break;
                         
                     }
 
@@ -155,11 +146,33 @@ namespace GameClient
             }
             disconnect();
         }
-        #endregion  
+        #endregion
+
+        #region setters
         public void setID(string ID)
         {
             this.ID = ID;
             this.Send(Client.usernameCode, username);
+
+        }
+
+        public void setOutcome(string message)
+        {
+            if(message == "winner")
+            {
+                this.wins++;
+                this.GUI.setStats(message, this.wins);
+            }
+            else if(message == "loser")
+            {
+                this.losses++;
+                this.GUI.setStats(message, this.losses);
+            }
+            else if(message == "tie")
+            {
+                this.ties++;
+                this.GUI.setStats(message, this.ties);
+            }
 
         }
 
@@ -172,7 +185,6 @@ namespace GameClient
 
         public void setTurn(string turnString)
         {
-            Console.WriteLine(turnString);
             if(turnString == "true")
             {
                 this.turn = true;
@@ -202,10 +214,51 @@ namespace GameClient
         {
             this.teamString = message.Substring(0, 1);
             string opponentUsername = message.Substring(1);
-            Console.WriteLine(teamString + " "+opponentUsername);
             this.GUI.setOpponent(teamString, opponentUsername);
 
         }
+        #endregion
+
+        #region coordinateHandling
+        public void fillCoordinates()
+        {
+            int i = 11;
+            for (int b = 0; b < 3; b++)
+            {
+                for (int c = 0; c < 3; c++)
+                {
+
+                    this.coordinates.Add(i + "", false);
+                    i++;
+                }
+                i += 7;
+            }
+        }
+
+        public void clearAllCoordinates()
+        {
+            foreach(string key in this.coordinates.Keys)
+            {                
+                this.GUI.inputSet(key, "");
+            }
+            this.coordinates = new Dictionary<string, bool>();
+            fillCoordinates();
+        }
+
+        public bool checkCoordinates()
+        {
+            bool allFilled = true;
+            foreach (KeyValuePair<string, bool> entry in this.coordinates)
+            {
+                if (this.coordinates[entry.Key] == false)
+                {
+                    allFilled = false;
+                    break;
+                }
+            }
+            return allFilled;
+        }
+        #endregion
 
         public void disconnect()
         {

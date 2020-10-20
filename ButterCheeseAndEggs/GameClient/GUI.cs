@@ -85,17 +85,35 @@ namespace GameClient
             usernameLabel.Text = "Username: " + username;
         }
 
+        public void setStats(string type, int amount)
+        {
+            switch (type)
+            {
+                case "winner":
+                    this.winsLabel.Text = "Wins: " + amount;
+                    break;
+                case "loser":
+                    this.lossesLabel.Text = "Losses: " + amount;
+                    break;
+                case "tie":
+                    this.tiesLabel.Text = "Ties: " + amount;
+                    break;
+            }
+        }
+
         #region coordinateHandling
         public void setCoordinate(string coords, string team)
         {
             if(this.client.inGame == true)
             {
-                Console.WriteLine(this.client.coordinates[coords]+"AAAA");
                 if (this.client.coordinates[coords] == false)
                 {
-                    Console.WriteLine("2");
                     this.client.coordinates[coords] = true;
+
                     inputSet(coords,team);
+
+                    if (this.client.checkCoordinates())
+                        this.client.clearAllCoordinates();
                 }
             }
         }
@@ -201,5 +219,10 @@ namespace GameClient
             setOwnCoordinate("33", this.client.teamString);
         }
         #endregion
+
+        private void GUI_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

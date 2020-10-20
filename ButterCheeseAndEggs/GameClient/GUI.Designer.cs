@@ -58,6 +58,7 @@
             this.labelx3y2 = new System.Windows.Forms.Label();
             this.labelx3y3 = new System.Windows.Forms.Label();
             this.turnLabel = new System.Windows.Forms.Label();
+            this.tiesLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -296,7 +297,7 @@
             // 
             this.labelx1y2.AutoSize = true;
             this.labelx1y2.Font = new System.Drawing.Font("Segoe UI", 75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.labelx1y2.Location = new System.Drawing.Point(603, 87);
+            this.labelx1y2.Location = new System.Drawing.Point(608, 87);
             this.labelx1y2.Name = "labelx1y2";
             this.labelx1y2.Size = new System.Drawing.Size(0, 133);
             this.labelx1y2.TabIndex = 12;
@@ -323,7 +324,7 @@
             // 
             this.labelx2y2.AutoSize = true;
             this.labelx2y2.Font = new System.Drawing.Font("Segoe UI", 75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.labelx2y2.Location = new System.Drawing.Point(603, 256);
+            this.labelx2y2.Location = new System.Drawing.Point(609, 256);
             this.labelx2y2.Name = "labelx2y2";
             this.labelx2y2.Size = new System.Drawing.Size(0, 133);
             this.labelx2y2.TabIndex = 12;
@@ -350,7 +351,7 @@
             // 
             this.labelx3y2.AutoSize = true;
             this.labelx3y2.Font = new System.Drawing.Font("Segoe UI", 75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.labelx3y2.Location = new System.Drawing.Point(603, 423);
+            this.labelx3y2.Location = new System.Drawing.Point(609, 423);
             this.labelx3y2.Name = "labelx3y2";
             this.labelx3y2.Size = new System.Drawing.Size(0, 133);
             this.labelx3y2.TabIndex = 12;
@@ -374,12 +375,23 @@
             this.turnLabel.TabIndex = 13;
             this.turnLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // tiesLabel
+            // 
+            this.tiesLabel.AutoSize = true;
+            this.tiesLabel.Font = new System.Drawing.Font("Segoe UI", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.tiesLabel.Location = new System.Drawing.Point(12, 141);
+            this.tiesLabel.Name = "tiesLabel";
+            this.tiesLabel.Size = new System.Drawing.Size(76, 37);
+            this.tiesLabel.TabIndex = 14;
+            this.tiesLabel.Text = "Ties: ";
+            // 
             // GUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.ClientSize = new System.Drawing.Size(1347, 662);
+            this.ClientSize = new System.Drawing.Size(1339, 655);
+            this.Controls.Add(this.tiesLabel);
             this.Controls.Add(this.turnLabel);
             this.Controls.Add(this.labelx3y3);
             this.Controls.Add(this.labelx3y2);
@@ -411,6 +423,7 @@
             this.Controls.Add(this.SendButton);
             this.Name = "GUI";
             this.Text = "GUI";
+            this.Load += new System.EventHandler(this.GUI_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -448,5 +461,6 @@
         private System.Windows.Forms.Label labelx3y2;
         private System.Windows.Forms.Label labelx3y3;
         private System.Windows.Forms.Label turnLabel;
+        private System.Windows.Forms.Label tiesLabel;
     }
 }

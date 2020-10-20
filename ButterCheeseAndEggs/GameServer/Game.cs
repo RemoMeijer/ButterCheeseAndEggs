@@ -7,6 +7,7 @@ namespace GameServer
 {
     class Game
     {
+        #region attributes
         private int turn;
         private Boolean player1Turn;
         private Boolean player2Turn;
@@ -15,9 +16,9 @@ namespace GameServer
         private int[][] player2Coordinates;
         private ServerClient player1;
         private ServerClient player2;
+        #endregion
 
-
-
+        #region startup
         public Game(ServerClient player1, ServerClient player2)
         {
             this.player1 = player1;
@@ -40,25 +41,44 @@ namespace GameServer
                 player2Coordinates[i] = new int[2];
             }
         }
+        #endregion
+
+        #region server communication
+        public void SendWinnerAndLoser(ServerClient winner, ServerClient loser)
+        {
+            winner.Send(Server.outcomeCode, "winner");
+            loser.Send(Server.outcomeCode, "loser");
+        }
+
+        public void SendBothTies()
+        {
+            this.player1.Send(Server.outcomeCode, "tie");
+            this.player2.Send(Server.outcomeCode, "tie");
+        }
 
         public void sendCoord(ServerClient client, string message) 
         {
-            if(player1 != client)
+            int x = Int32.Parse(message.Substring(1, 1));
+            int y = Int32.Parse(message.Substring(0, 1));
+           
+            if (player1 != client)
             {
-                player1.Send(ServerClient.coordinateCode, message);
-                player1.Send(ServerClient.turnCode, "true");
-                player2.Send(ServerClient.turnCode, "false");
+                player1.Send(Server.coordinateCode, message);
+                player1.Send(Server.turnCode, "true");
+                player2.Send(Server.turnCode, "false");
 
             }
             else
             {
-                player2.Send(ServerClient.coordinateCode, message);
-                player1.Send(ServerClient.turnCode, "false");
-                player2.Send(ServerClient.turnCode, "true");
+                player2.Send(Server.coordinateCode, message);
+                player1.Send(Server.turnCode, "false");
+                player2.Send(Server.turnCode, "true");
 
             }
         }
+        #endregion
 
+        #region game logic
         public Boolean[] receive(int[] newCoords)
         {
             Boolean isUnique = true;
@@ -157,5 +177,6 @@ namespace GameServer
                 gameWon = true;
             }
         }
+        #endregion
     }
 }

@@ -8,6 +8,7 @@ namespace GameServer
 {
     class ServerClient
     {
+        #region attributes
         private TcpClient client;
         private String username;
         private string ID;
@@ -16,14 +17,7 @@ namespace GameServer
         private bool connected;
         private Server server;
         private Game game;
-
-        public static string disconnectCode = "DCNT";
-        public static string chatmessageCode = "CHMS";
-        public static string idCode = "IDEN";
-        public static string inGameCode = "STIG";
-        public static string turnCode = "STTN";
-        public static string coordinateCode = "CRDN";
-
+        #endregion
 
         public ServerClient(TcpClient client, string ID, Server server)
         {
@@ -33,10 +27,11 @@ namespace GameServer
             this.ID = ID;
             this.streamWriter = new StreamWriter(client.GetStream(), Encoding.ASCII, -1, true);
             this.streamReader = new StreamReader(client.GetStream(), Encoding.ASCII);
-            Send(ServerClient.idCode, ID);
+            Send(Server.idCode, ID);
 
         }
 
+        #region sending and receiving
         public void Send(string type,string message)
         {
             try
@@ -91,7 +86,9 @@ namespace GameServer
             }
     
         }
+        #endregion
 
+        #region getters and setters
         public string getID()
         {
             return this.ID;
@@ -111,6 +108,7 @@ namespace GameServer
         {
             this.game = game;
         }
+        #endregion
 
         public void disconnect()
         {
@@ -120,8 +118,6 @@ namespace GameServer
             this.connected = false;
             Console.WriteLine(this.ID + " has disonnected");
         }
-
-
 
     }
 
