@@ -46,6 +46,7 @@ namespace GameServer
         #region server communication
         public void SendWinnerAndLoser(ServerClient winner, ServerClient loser)
         {
+            Console.WriteLine("we have a winner!");
             winner.Send(Server.outcomeCode, "winner");
             loser.Send(Server.outcomeCode, "loser");
         }
@@ -60,6 +61,10 @@ namespace GameServer
         {
             int x = Int32.Parse(message.Substring(1, 1));
             int y = Int32.Parse(message.Substring(0, 1));
+
+            int[] coordinate = new int[] { x, y };
+
+            check(coordinate);
            
             if (player1 != client)
             {
@@ -75,6 +80,29 @@ namespace GameServer
                 player2.Send(Server.turnCode, "true");
 
             }
+        }
+
+        public void check(int[] coordinate)
+        {
+            Boolean[] a = receive(coordinate);
+            Console.WriteLine("Lenght : "+a.Length+ " 2:" + a[2]);
+            try
+            {
+                if (a[0] && a[2])
+                {
+                    SendWinnerAndLoser(player1, player2);
+                }
+                else if (a[1] && a[2])
+                {
+                    SendWinnerAndLoser(player2, player1);
+                }
+            } catch (Exception e)
+            {
+                Console.WriteLine(e.StackTrace);
+                Console.WriteLine(e.Message);
+
+            }
+
         }
         #endregion
 
