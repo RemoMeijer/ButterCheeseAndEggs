@@ -73,6 +73,9 @@ namespace GameServer
                         case "CRDN":
                             setCoords(message);
                             break;
+                        case "GORC":
+                            setGameOver();
+                            break;
                     }
                 
            
@@ -102,6 +105,11 @@ namespace GameServer
             string team = message.Substring(2, 1);
             
             this.game.sendCoord(this,message);
+        }
+
+        public void setGameOver()
+        {
+            this.server.addClientToQueue(this);
         }
 
         public void setGame(Game game)

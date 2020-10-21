@@ -8,7 +8,8 @@ namespace GameServer
     class Game
     {
         #region attributes
-        private int turn;
+        private int player1TurnNumber;
+        private int player2TurnNumber;
         private Boolean player1Turn;
         private Boolean player2Turn;
         private Boolean gameWon;
@@ -23,10 +24,11 @@ namespace GameServer
         {
             this.player1 = player1;
             this.player2 = player2;
-            turn = 0;
-            player1Turn = true;
-            player2Turn = false;
-            gameWon = false;
+            this.player1TurnNumber = 0;
+            this.player2TurnNumber = 0;
+            this.player1Turn = true;
+            this.player2Turn = false;
+            this.gameWon = false;
             //makes the arrays for the coordinates for the players
             initialiseArrays();
         }
@@ -44,7 +46,7 @@ namespace GameServer
         #endregion
 
         #region server communication
-        public void SendWinnerAndLoser(ServerClient winner, ServerClient loser)
+        public void SendWinnerAndLoser(ServerClient loser, ServerClient winner)
         {
             Console.WriteLine("we have a winner!");
             winner.Send(Server.outcomeCode, "winner");
@@ -63,6 +65,7 @@ namespace GameServer
             int y = Int32.Parse(message.Substring(0, 1));
 
             int[] coordinate = new int[] { x, y };
+            Console.WriteLine("RECEIVED COORD: x:"+coordinate[0]+" y:"+coordinate[1]);
 
             check(coordinate);
            
@@ -86,8 +89,7 @@ namespace GameServer
         {
             Boolean[] a = receive(coordinate);
             Console.WriteLine("Lenght : "+a.Length+ " 2:" + a[2]);
-            try
-            {
+           
                 if (a[0] && a[2])
                 {
                     SendWinnerAndLoser(player1, player2);
@@ -96,12 +98,7 @@ namespace GameServer
                 {
                     SendWinnerAndLoser(player2, player1);
                 }
-            } catch (Exception e)
-            {
-                Console.WriteLine(e.StackTrace);
-                Console.WriteLine(e.Message);
-
-            }
+            
 
         }
         #endregion
@@ -112,66 +109,81 @@ namespace GameServer
             Boolean isUnique = true;
             if (player1Turn)
             {
-                if(player1Coordinates.Length != 0)
-                {
-                    foreach (int[] oldCoords in player1Coordinates)
-                    {
-                        if (newCoords.Equals(oldCoords))
-                        {
-                            isUnique = false;
-                            break;
-                        }
-                    }
-                }
+                //if(player1Coordinates.Length != 0)
+                //{
+                //    foreach (int[] oldCoords in player1Coordinates)
+                //    {
+                //        if (newCoords.Equals(oldCoords))
+                //        {
+                //            isUnique = false;
+                //            break;
+                //        }
+                //    }
+                //}
                 
                 if (isUnique)
                 {
-                    player1Coordinates[turn] = newCoords;
-                    turn++;
-                    if (turn > 4)
+                    player1Coordinates[player1TurnNumber] = newCoords;
+                    player1TurnNumber++;
+                    if (player1TurnNumber > 2)
                         checkFullRow();
                     player1Turn = false;
                     player2Turn = true;                 
                 }
+                if(player1TurnNumber >= 5 && gameWon == false)               
+                    SendBothTies();
+                
+                {
+
+                }
             }
             else if (player2Turn)
             {
-                if(player2Coordinates.Length != 0)
-                {
-                    foreach (int[] oldCoords in player2Coordinates)
-                    {
-                        if (newCoords.Equals(oldCoords))
-                        {
-                            isUnique = false;
-                            break;
-                        }
-                    }
-                }
+                //if(player2Coordinates.Length != 0)
+                //{
+                //    foreach (int[] oldCoords in player2Coordinates)
+                //    {
+                //        if (newCoords.Equals(oldCoords))
+                //        {
+                //            isUnique = false;
+                //            break;
+                //        }
+                //    }
+                //}
                 
                 if (isUnique)
                 {
-                    player1Coordinates[turn - 1] = newCoords;
-                    turn++;
-                    if (turn > 4)
+                    player2Coordinates[player2TurnNumber] = newCoords;
+                    player2TurnNumber++;
+                    if (player2TurnNumber > 2)
                         checkFullRow();
                     player1Turn = true;
-                    player2Turn = false;                    
+                    player2Turn = false;           
+                    
                 }
             }
+            
             return new Boolean[] {player1Turn, player2Turn, gameWon};
         }
 
         public void checkFullRow()
         {
+            Console.WriteLine("AAAAAA");
             Boolean[] checkingArray = new Boolean[9];
 
             if(player1Turn)
             {
                 foreach (int[] coordinates in player1Coordinates)
                 {
+                    Console.WriteLine((coordinates[0] + " : "+coordinates[1]));
+
+                    Console.WriteLine((coordinates[0] - 1) + ((coordinates[1] - 1) * 3));
                     //puts all the coordinates in a 2d array
-                    checkingArray[(coordinates[0] - 1) + ((coordinates[1] - 1) * 3)] = true;
-                }               
+                    if((coordinates[0] - 1) + ((coordinates[1] - 1) * 3) >= 0)
+                        checkingArray[(coordinates[0] - 1) + ((coordinates[1] - 1) * 3)] = true;
+
+                }
+               
             }
 
             if (player2Turn)
@@ -179,7 +191,8 @@ namespace GameServer
                 foreach (int[] coordinates in player2Coordinates)
                 {
                     //puts all the coordinates in a 2d array
-                    checkingArray[(coordinates[0] - 1) + ((coordinates[1] - 1) * 3)] = true;
+                    if ((coordinates[0] - 1) + ((coordinates[1] - 1) * 3) >= 0)
+                        checkingArray[(coordinates[0] - 1) + ((coordinates[1] - 1) * 3)] = true;
                 }
             }
 
@@ -204,6 +217,7 @@ namespace GameServer
             {
                 gameWon = true;
             }
+            
         }
         #endregion
     }

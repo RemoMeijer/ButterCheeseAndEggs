@@ -32,6 +32,7 @@ namespace GameClient
         public static string usernameCode = "USRN";
         public static string disconnectCode = "DCNT";
         public static string coordinateCode = "CRDN";
+        public static string gameOverCode = "GORC";
         #endregion
 
         public static void Main(string[] args)
@@ -173,6 +174,11 @@ namespace GameClient
                 this.ties++;
                 this.GUI.setStats(message, this.ties);
             }
+
+            clearAllCoordinates();
+            this.inGame = false;
+
+            Send(Client.gameOverCode, "");
 
         }
 

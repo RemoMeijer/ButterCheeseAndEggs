@@ -64,8 +64,9 @@ namespace GameServer
 
                 TcpClient client = listener.AcceptTcpClient();
                 ServerClient serverClient = new ServerClient(client,generateID(),this);
-                this.clients.Add(serverClient);
                 this.clientsInQueue.Add(serverClient);
+                Console.WriteLine("PPL IN Q: "+clientsInQueue.Count);
+                this.clients.Add(serverClient);
 
                 Console.WriteLine(serverClient.getID()+" connected");
 
@@ -89,7 +90,7 @@ namespace GameServer
 
             Console.WriteLine("Username set!");
 
-            createGames();
+            inQueue();
 
         }
         #endregion
@@ -131,14 +132,27 @@ namespace GameServer
             }
         }
 
-        public void createGames()
-        {          
-            if(this.clientsInQueue.Count == 2)
-            {
-                ServerClient client1 =  this.clientsInQueue[0];
-                ServerClient client2 =  this.clientsInQueue[1];
-                Game game = new Game(client1,client2);
+        public void addClientToQueue(ServerClient client)
+        {
+            this.clientsInQueue.Add(client);
+            inQueue();
+        }
 
+        public void inQueue()
+        {
+            if (this.clientsInQueue.Count >= 2)
+            {
+                ServerClient client1 = this.clientsInQueue[0];
+                ServerClient client2 = this.clientsInQueue[1];
+                createGame(client1, client2);
+                this.clientsInQueue.Clear();
+            }
+
+        }
+
+        public void createGame(ServerClient client1, ServerClient client2)
+        {                     
+                Game game = new Game(client1,client2);
 
                 client1.Send(Server.inGameCode, "X" + this.IDandUsername[client2.getID()]);
                 client2.Send(Server.inGameCode, "O" + this.IDandUsername[client1.getID()]);
@@ -147,10 +161,7 @@ namespace GameServer
                 client2.setGame(game);
 
                 client1.Send(Server.turnCode, "true");
-                client2.Send(Server.turnCode, "false");
-
-                this.clientsInQueue.Clear();
-            }
+                client2.Send(Server.turnCode, "false");           
         }
         #endregion
     }
