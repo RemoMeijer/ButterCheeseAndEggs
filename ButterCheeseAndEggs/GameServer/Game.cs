@@ -5,7 +5,7 @@ using System.Text;
 
 namespace GameServer
 {
-    class Game
+    public class Game
     {
         #region attributes
         private int player1TurnNumber;
@@ -24,6 +24,17 @@ namespace GameServer
         {
             this.player1 = player1;
             this.player2 = player2;
+            this.player1TurnNumber = 0;
+            this.player2TurnNumber = 0;
+            this.player1Turn = true;
+            this.player2Turn = false;
+            this.gameWon = false;
+            //makes the arrays for the coordinates for the players
+            initialiseArrays();
+        }
+
+        public Game()
+        {
             this.player1TurnNumber = 0;
             this.player2TurnNumber = 0;
             this.player1Turn = true;
@@ -168,7 +179,6 @@ namespace GameServer
 
         public void checkFullRow()
         {
-            Console.WriteLine("AAAAAA");
             Boolean[] checkingArray = new Boolean[9];
 
             if(player1Turn)

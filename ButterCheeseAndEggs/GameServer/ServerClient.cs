@@ -6,7 +6,7 @@ using System.Text;
 
 namespace GameServer
 {
-    class ServerClient
+    public class ServerClient
     {
         #region attributes
         private TcpClient client;
