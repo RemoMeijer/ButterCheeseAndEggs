@@ -6,6 +6,7 @@ using System.Net.Sockets;
 using System.Security;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace GameServer
 {
@@ -77,7 +78,6 @@ namespace GameServer
                 TcpClient client = listener.AcceptTcpClient();
                 ServerClient serverClient = new ServerClient(client,generateID(),this);
                 this.clientsInQueue.Add(serverClient);
-                Console.WriteLine("PPL IN Q: "+clientsInQueue.Count);
                 this.clients.Add(serverClient);
 
                 Console.WriteLine(serverClient.getID()+" connected");
@@ -90,20 +90,30 @@ namespace GameServer
 
         public string generateID()
         {
+            Console.WriteLine("a");
             while (true)
             {
-                bool taken = false;
-                int id = random.Next(1000, 9999);
-                foreach (ServerClient client in this.clients)
+                string id = random.Next(1000, 9999)+"";
+                Task<bool> task = checkID(id);
+                Console.WriteLine(task.Result);
+                if (!task.Result)
                 {
-                    if (client.getID() == id + "")
-                    {
-                        taken = true;
-                    }
+                    Console.WriteLine(id);
+                    return id;
                 }
-                if (!taken)
-                    return id + "";
             }
+        }
+
+        public async Task<bool> checkID(string id)
+        {
+            foreach (ServerClient client in this.clients)
+            {
+                if (client.getID() == id)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
         #endregion
 
