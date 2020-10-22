@@ -205,14 +205,17 @@ namespace GameServer
                         checkingArray[(coordinates[0] - 1) + ((coordinates[1] - 1) * 3)] = true;
                 }
             }
-
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < 7; i += 3)
             {
-                //checks all horizontalRows for wins
-                if (checkingArray[i] && checkingArray[i + 1] && checkingArray[i + 3])
+                if (checkingArray[i] && checkingArray[i + 1] && checkingArray[i + 2])
                 {
                     gameWon = true;
                 }
+            }
+            for (int i = 0; i < 3; i++)
+            {
+                //checks all horizontalRows for wins
+                
                 //checks all vertical rows for wins
                 if (checkingArray[i] && checkingArray[i + 3] && checkingArray[i + 6])
                 {
