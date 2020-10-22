@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net;
 using System.Net.Sockets;
+using System.Security;
 using System.Text;
 using System.Threading;
 
@@ -17,6 +19,9 @@ namespace GameServer
         private List<Thread> clientThreads;
         private Random random;
         private Dictionary<string, string> IDandUsername;
+        private List<String> chatlogs;
+        private string directoryPath;
+        private bool serverOn;
         #endregion
 
         #region protocol codes
@@ -38,28 +43,35 @@ namespace GameServer
         #region startup
         public Server()
         {
+            this.serverOn = true;
+            this.directoryPath = System.Environment.CurrentDirectory + "\\chatlogs\\chatlogs.txt";
+            this.chatlogs = new List<string>();
+            this.readChatlogs();
             this.clients = new List<ServerClient>();
             this.clientsInQueue = new List<ServerClient>();
             this.IDandUsername = new Dictionary<string, string>();
             this.localhost = IPAddress.Parse("127.0.0.1");
             this.listener = new TcpListener(localhost, 1337);
             this.clientThreads = new List<Thread>();
-            this.random = new Random();
+            this.random = new Random();           
         }
 
         public void start()
         {
             this.listener.Start();
-            AcceptClients();
+            Thread thread = new Thread(AcceptClients);
+            thread.Start();
+
+            waitForServerInput();
         }
-        #endregion
+        #endregion       
 
         #region accepting clients
         public void AcceptClients()
         {
             Console.WriteLine("Waiting for people to join...");
 
-            while (true)
+            while (serverOn)
             {
 
                 TcpClient client = listener.AcceptTcpClient();
@@ -93,6 +105,30 @@ namespace GameServer
             inQueue();
 
         }
+
+        public void addChatlog(string message)
+        {
+            this.chatlogs.Add(message);
+            saveChatlogs();
+        }
+
+        public void waitForServerInput()
+        {
+            Console.WriteLine("Type 'clear' to clear chatlogs\nType 'quit' to shutdown server");
+            while (serverOn)
+            {
+                string input = Console.ReadLine();
+                switch (input)
+                {
+                    case "quit":
+                        this.serverOn = false;
+                        break;
+                    case "clear":
+                        clearChatlogs();
+                        break;
+                }
+            }
+        }
         #endregion
 
         #region sending 
@@ -103,12 +139,22 @@ namespace GameServer
 
             string messageToSend = "["+username + "]: " + message;
 
+            addChatlog(messageToSend);
+
             Console.WriteLine("Sending to all clients: "+messageToSend);
 
             foreach (ServerClient client in this.clients)
             {
                 if (serverClient != client)
                     client.Send(Server.chatmessageCode, messageToSend);
+            }
+        }
+
+        public void getChatMessages(ServerClient client)
+        {
+            foreach(string message in this.chatlogs)
+            {
+                client.Send(Server.chatmessageCode, message);
             }
         }
         #endregion
@@ -131,7 +177,31 @@ namespace GameServer
                     return id+"";
             }
         }
+        #endregion
 
+        #region fileIO
+        public void readChatlogs()
+        {
+            String[] chatlogArray = File.ReadAllLines(directoryPath);
+            foreach (string log in chatlogArray)
+            {
+                this.chatlogs.Add(log);
+            }
+        }
+
+        public void saveChatlogs()
+        {
+            File.WriteAllLines(directoryPath, this.chatlogs);
+        }
+
+        public void clearChatlogs()
+        {
+            this.chatlogs.Clear();
+            saveChatlogs();
+        }
+        #endregion
+
+        #region game and queue handling
         public void addClientToQueue(ServerClient client)
         {
             this.clientsInQueue.Add(client);

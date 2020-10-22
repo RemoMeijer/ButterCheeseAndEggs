@@ -61,6 +61,7 @@ namespace GameServer
                         case "USRN": //username set
                             this.server.addUsername(ID,message);
                             this.username = message;
+                            this.server.getChatMessages(this);
                             break;
 
                         case "CHMS": //chatmessage
