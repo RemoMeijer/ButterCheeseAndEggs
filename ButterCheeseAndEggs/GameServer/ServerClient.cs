@@ -14,7 +14,7 @@ namespace GameServer
         private string ID;
         private StreamWriter streamWriter;
         private StreamReader streamReader;
-        private bool connected;
+        public bool connected { get; set; }
         private Server server;
         private Game game;
         #endregion

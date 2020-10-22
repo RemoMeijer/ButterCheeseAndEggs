@@ -9,7 +9,7 @@ using System.Threading;
 
 namespace GameServer
 {
-    class Server
+    public class Server
     {
         #region attributes
         private List<ServerClient> clients;
@@ -87,6 +87,24 @@ namespace GameServer
 
             }
         }
+
+        public string generateID()
+        {
+            while (true)
+            {
+                bool taken = false;
+                int id = random.Next(1000, 9999);
+                foreach (ServerClient client in this.clients)
+                {
+                    if (client.getID() == id + "")
+                    {
+                        taken = true;
+                    }
+                }
+                if (!taken)
+                    return id + "";
+            }
+        }
         #endregion
 
         #region handling input
@@ -121,12 +139,22 @@ namespace GameServer
                 switch (input)
                 {
                     case "quit":
-                        this.serverOn = false;
+                        stopServer();
+                        Console.WriteLine("Goodbye");
                         break;
                     case "clear":
                         clearChatlogs();
+                        Console.WriteLine("Chaglogs cleared");
                         break;
                 }
+            }
+        }
+        public void stopServer()
+        {
+            this.serverOn = false;
+            foreach (ServerClient client in this.clients)
+            {
+                client.connected = false;
             }
         }
         #endregion
@@ -157,27 +185,7 @@ namespace GameServer
                 client.Send(Server.chatmessageCode, message);
             }
         }
-        #endregion
-
-        #region generating
-        public string generateID()
-        {
-            while (true)
-            {
-                bool taken = false;
-                int id = random.Next(1000, 9999);
-                foreach (ServerClient client in this.clients)
-                {
-                    if (client.getID() == id+"")
-                    {
-                        taken = true;
-                    }
-                }
-                if (!taken)
-                    return id+"";
-            }
-        }
-        #endregion
+        #endregion        
 
         #region fileIO
         public void readChatlogs()
@@ -234,5 +242,6 @@ namespace GameServer
                 client2.Send(Server.turnCode, "false");           
         }
         #endregion
+        
     }
 }
