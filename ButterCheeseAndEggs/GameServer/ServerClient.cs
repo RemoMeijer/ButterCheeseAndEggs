@@ -55,6 +55,8 @@ namespace GameServer
                     string ID = received.Substring(4, 4);
                     string message = received.Substring(8);
 
+                    Console.WriteLine(received);
+
 
                     switch (type)
                     {
@@ -99,12 +101,7 @@ namespace GameServer
         }
 
         public void setCoords(string message)
-        {
-            string coords = message.Substring(0, 2);
-            int x = Int32.Parse(message.Substring(0, 1));
-            int y = Int32.Parse(message.Substring(1, 1));
-            string team = message.Substring(2, 1);
-            
+        {   
             this.game.sendCoord(this,message);
         }
 

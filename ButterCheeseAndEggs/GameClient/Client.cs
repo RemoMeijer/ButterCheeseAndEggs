@@ -174,8 +174,8 @@ namespace GameClient
                 this.GUI.setStats(message, this.ties);
             }
 
-            clearAllCoordinates();
             this.inGame = false;
+            clearAllCoordinates();
 
             Send(Client.gameOverCode, "");
 

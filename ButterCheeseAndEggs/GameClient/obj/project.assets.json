@@ -8,19 +8,19 @@
     ".NETCoreApp,Version=v3.1": []
   },
   "packageFolders": {
-    "C:\\Users\\Samir\\.nuget\\packages\\": {}
+    "C:\\Users\\samir\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Documents\\Avans\\2.1\\C# Programmeren\\Eindproject\\ButterCheeseAndEggs\\ButterCheeseAndEggs\\GameClient\\GameClient.csproj",
+      "projectUniqueName": "D:\\Documents\\School\\School Avans 2.1\\C#\\Eindproject\\ButterCheeseAndEggs\\ButterCheeseAndEggs\\GameClient\\GameClient.csproj",
       "projectName": "GameClient",
-      "projectPath": "D:\\Documents\\Avans\\2.1\\C# Programmeren\\Eindproject\\ButterCheeseAndEggs\\ButterCheeseAndEggs\\GameClient\\GameClient.csproj",
-      "packagesPath": "C:\\Users\\Samir\\.nuget\\packages\\",
-      "outputPath": "D:\\Documents\\Avans\\2.1\\C# Programmeren\\Eindproject\\ButterCheeseAndEggs\\ButterCheeseAndEggs\\GameClient\\obj\\",
+      "projectPath": "D:\\Documents\\School\\School Avans 2.1\\C#\\Eindproject\\ButterCheeseAndEggs\\ButterCheeseAndEggs\\GameClient\\GameClient.csproj",
+      "packagesPath": "C:\\Users\\samir\\.nuget\\packages\\",
+      "outputPath": "D:\\Documents\\School\\School Avans 2.1\\C#\\Eindproject\\ButterCheeseAndEggs\\ButterCheeseAndEggs\\GameClient\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Samir\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\samir\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [

@@ -59,7 +59,6 @@ namespace GameServer
         #region server communication
         public void SendWinnerAndLoser(ServerClient loser, ServerClient winner)
         {
-            Console.WriteLine("we have a winner!");
             winner.Send(Server.outcomeCode, "winner");
             loser.Send(Server.outcomeCode, "loser");
         }
@@ -76,7 +75,6 @@ namespace GameServer
             int y = Int32.Parse(message.Substring(0, 1));
 
             int[] coordinate = new int[] { x, y };
-            Console.WriteLine("RECEIVED COORD: x:"+coordinate[0]+" y:"+coordinate[1]);
 
             check(coordinate);
            
@@ -99,7 +97,6 @@ namespace GameServer
         public void check(int[] coordinate)
         {
             Boolean[] a = receive(coordinate);
-            Console.WriteLine("Lenght : "+a.Length+ " 2:" + a[2]);
            
                 if (a[0] && a[2])
                 {
@@ -120,17 +117,6 @@ namespace GameServer
             Boolean isUnique = true;
             if (player1Turn)
             {
-                //if(player1Coordinates.Length != 0)
-                //{
-                //    foreach (int[] oldCoords in player1Coordinates)
-                //    {
-                //        if (newCoords.Equals(oldCoords))
-                //        {
-                //            isUnique = false;
-                //            break;
-                //        }
-                //    }
-                //}
                 
                 if (isUnique)
                 {
@@ -150,18 +136,6 @@ namespace GameServer
             }
             else if (player2Turn)
             {
-                //if(player2Coordinates.Length != 0)
-                //{
-                //    foreach (int[] oldCoords in player2Coordinates)
-                //    {
-                //        if (newCoords.Equals(oldCoords))
-                //        {
-                //            isUnique = false;
-                //            break;
-                //        }
-                //    }
-                //}
-                
                 if (isUnique)
                 {
                     player2Coordinates[player2TurnNumber] = newCoords;
@@ -185,9 +159,6 @@ namespace GameServer
             {
                 foreach (int[] coordinates in player1Coordinates)
                 {
-                    Console.WriteLine((coordinates[0] + " : "+coordinates[1]));
-
-                    Console.WriteLine((coordinates[0] - 1) + ((coordinates[1] - 1) * 3));
                     //puts all the coordinates in a 2d array
                     if((coordinates[0] - 1) + ((coordinates[1] - 1) * 3) >= 0)
                         checkingArray[(coordinates[0] - 1) + ((coordinates[1] - 1) * 3)] = true;

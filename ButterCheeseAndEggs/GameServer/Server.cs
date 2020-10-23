@@ -45,7 +45,7 @@ namespace GameServer
         public Server()
         {
             this.serverOn = true;
-            this.directoryPath = System.Environment.CurrentDirectory + "\\chatlogs\\chatlogs.txt";
+            this.directoryPath = System.Environment.CurrentDirectory + "\\chatlogs.txt";
             this.chatlogs = new List<string>();
             this.readChatlogs();
             this.clients = new List<ServerClient>();
@@ -80,8 +80,6 @@ namespace GameServer
                 this.clientsInQueue.Add(serverClient);
                 this.clients.Add(serverClient);
 
-                Console.WriteLine(serverClient.getID()+" connected");
-
                 Thread thread = new Thread(handleServerClient);
                 thread.Start(serverClient);
 
@@ -90,15 +88,12 @@ namespace GameServer
 
         public string generateID()
         {
-            Console.WriteLine("a");
             while (true)
             {
                 string id = random.Next(1000, 9999)+"";
                 Task<bool> task = checkID(id);
-                Console.WriteLine(task.Result);
                 if (!task.Result)
                 {
-                    Console.WriteLine(id);
                     return id;
                 }
             }
@@ -128,7 +123,7 @@ namespace GameServer
         {
             this.IDandUsername.Add(id, username);
 
-            Console.WriteLine("Username set!");
+            Console.WriteLine(username + " - "+id+ "- connected");
 
             inQueue();
 
@@ -252,6 +247,24 @@ namespace GameServer
                 client2.Send(Server.turnCode, "false");           
         }
         #endregion
-        
+
+        #region removingClients
+        public void removeClientFromQueue(ServerClient client)
+        {
+            if (this.clientsInQueue.Contains(client))
+            {
+                this.clientsInQueue.Remove(client);
+            }
+        }
+
+        public void removeClientFromClients(ServerClient client)
+        {
+            if (this.clients.Contains(client))
+            {
+                this.clients.Remove(client);
+            }
+        }
+        #endregion
+
     }
 }

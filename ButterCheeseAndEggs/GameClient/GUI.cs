@@ -52,10 +52,17 @@ namespace GameClient
 
         public void addChatMessage(string message)
         {
-            ChatListBox.Invoke((MethodInvoker)(() =>
+            try
+            {
+                ChatListBox.Invoke((MethodInvoker)(() =>
+                {
+                    ChatListBox.Items.Add(message);
+                }));
+            }
+            catch
             {
                 ChatListBox.Items.Add(message);
-            }));
+            }
         }
 
         private void ExitButton_Click(object sender, EventArgs e)
@@ -170,7 +177,8 @@ namespace GameClient
 
         public void sendCoordinate(string input, string team)
         {
-            if(this.client.turn == true)
+            Console.WriteLine("TEAM: "+team);
+            if(this.client.turn == true && this.client.inGame == true)
                 this.client.Send(Client.coordinateCode, input + team);
         }
 
