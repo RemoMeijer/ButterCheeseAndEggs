@@ -137,7 +137,7 @@ namespace GameServer
 
         public void waitForServerInput()
         {
-            Console.WriteLine("Type 'clear' to clear chatlogs\nType 'quit' to shutdown server");
+            Console.WriteLine("Type 'clear' to clear chatlogs");
             while (serverOn)
             {
                 string input = Console.ReadLine();
@@ -213,6 +213,12 @@ namespace GameServer
         {
             this.clientsInQueue.Add(client);
             inQueue();
+        }
+
+        public void removeClientFromGame(ServerClient client)
+        {
+            client.Send(Server.inGameCode, "false");
+            this.addClientToQueue(client);
         }
 
         public void inQueue()

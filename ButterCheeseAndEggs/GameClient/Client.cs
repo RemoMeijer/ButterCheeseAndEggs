@@ -208,9 +208,14 @@ namespace GameClient
             if(message == "false")
             {
                 this.inGame = false;
+                clearAllCoordinates();
+                this.GUI.setOpponent("Waiting for opponent...");
+                this.GUI.setTurnLabel("");
             }
             else
             {
+                this.inGame = false;
+                clearAllCoordinates();
                 this.inGame = true;
                 setTeam(message);
             }

@@ -15,8 +15,8 @@ namespace GameServer
         private Boolean gameWon;
         private int[][] player1Coordinates;
         private int[][] player2Coordinates;
-        private ServerClient player1;
-        private ServerClient player2;
+        public ServerClient player1 { get; set; }
+        public ServerClient player2 { get; set; }
         #endregion
 
         #region startup

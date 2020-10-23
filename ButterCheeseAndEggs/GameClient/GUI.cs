@@ -82,6 +82,11 @@ namespace GameClient
             waitingLabel.Text = "Opponent: " + opponentUsername + "  |  Team: " + team;
         }
 
+        public void setOpponent(string message)
+        {
+            waitingLabel.Text = message;
+        }
+
         public void setTurnLabel(string text)
         {
             turnLabel.Text = text;

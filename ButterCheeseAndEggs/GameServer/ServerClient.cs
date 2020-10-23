@@ -117,6 +117,7 @@ namespace GameServer
 
         public void disconnect()
         {
+            disconnectFromGame();
             this.server.removeClientFromClients(this);
             this.server.removeClientFromQueue(this);
             this.streamReader.Close();
@@ -124,6 +125,18 @@ namespace GameServer
             this.client.Close();
             this.connected = false;
             Console.WriteLine(this.username + " - " + this.ID + " - disconnected");
+        }
+
+        public void disconnectFromGame()
+        {
+            if(this.game != null)
+            {
+                if(game.player1 != this)               
+                    this.server.removeClientFromGame(game.player1);
+                else
+                    this.server.removeClientFromGame(game.player2);
+
+            }
         }
 
     }
