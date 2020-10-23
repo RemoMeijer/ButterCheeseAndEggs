@@ -58,9 +58,6 @@ namespace GameServer
                     string ID = received.Substring(4, 4);
                     string message = received.Substring(8);
 
-                    Console.WriteLine(received);
-
-
                     switch (type)
                     {
                         case "USRN": //username set
