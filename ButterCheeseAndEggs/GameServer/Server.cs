@@ -189,10 +189,17 @@ namespace GameServer
         #region fileIO
         public void readChatlogs()
         {
-            String[] chatlogArray = File.ReadAllLines(directoryPath);
-            foreach (string log in chatlogArray)
+            try
             {
-                this.chatlogs.Add(log);
+                String[] chatlogArray = File.ReadAllLines(directoryPath);
+                foreach (string log in chatlogArray)
+                {
+                    this.chatlogs.Add(log);
+                }
+            }
+            catch
+            {
+                Console.WriteLine("Chatlogs folder not created yet");
             }
         }
 
