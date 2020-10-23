@@ -86,7 +86,6 @@
             this.ChatTextBox.Name = "ChatTextBox";
             this.ChatTextBox.Size = new System.Drawing.Size(243, 39);
             this.ChatTextBox.TabIndex = 2;
-            this.ChatTextBox.TextChanged += new System.EventHandler(this.ChatTextBox_TextChanged);
             this.ChatTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.DocKeyDown);
             // 
             // ChatListBox

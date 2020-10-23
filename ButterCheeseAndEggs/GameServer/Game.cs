@@ -76,7 +76,7 @@ namespace GameServer
 
             int[] coordinate = new int[] { x, y };
 
-            check(coordinate);
+            checkForWinner(coordinate);
            
             if (player1 != client)
             {
@@ -94,7 +94,7 @@ namespace GameServer
             }
         }
 
-        public void check(int[] coordinate)
+        public void checkForWinner(int[] coordinate)
         {
             Boolean[] a = receive(coordinate);
            

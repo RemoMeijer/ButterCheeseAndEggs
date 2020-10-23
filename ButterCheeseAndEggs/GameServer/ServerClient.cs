@@ -47,6 +47,10 @@ namespace GameServer
             }
         }
 
+       /*
+        *  The following method receives the messages, divides them and takes the right
+        *  action depending on the type of the message.
+        */
         public void Receive()
         {
             while (connected)
@@ -115,6 +119,7 @@ namespace GameServer
         }
         #endregion
 
+        #region disconnecting
         public void disconnect()
         {
             disconnectFromGame();
@@ -138,7 +143,7 @@ namespace GameServer
 
             }
         }
-
+        #endregion
     }
 
 }

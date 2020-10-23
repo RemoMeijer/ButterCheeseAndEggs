@@ -13,6 +13,7 @@ namespace GameClient
 
         private Client client;
 
+        #region startup
         public GUI(Client client)
         {
             this.client = client;
@@ -27,6 +28,9 @@ namespace GameClient
             Application.Run(this);
         }
 
+        #endregion
+
+        #region events
         private void SendButton_Click(object sender, EventArgs e)
         {
             sendMessage();
@@ -38,8 +42,15 @@ namespace GameClient
                 SendButton_Click(null, null);
         }
 
+        private void ExitButton_Click(object sender, EventArgs e)
+        {
+            this.client.Send(Client.disconnectCode, "");
+            this.client.disconnect();
+            Application.Exit();
+        }
+        #endregion
 
-
+        #region chatmessages
         public void sendMessage()
         {
             if (ChatTextBox.Text != "")
@@ -64,18 +75,9 @@ namespace GameClient
                 ChatListBox.Items.Add(message);
             }
         }
+        #endregion
 
-        private void ExitButton_Click(object sender, EventArgs e)
-        {
-            this.client.Send(Client.disconnectCode, "");
-            this.client.disconnect();
-            Application.Exit();
-        }
-
-        private void ChatTextBox_TextChanged(object sender, EventArgs e)
-        {
-
-        }
+        #region setters
 
         public void setOpponent(string team, string opponentUsername)
         {
@@ -112,6 +114,7 @@ namespace GameClient
                     break;
             }
         }
+        #endregion
 
         #region coordinateHandling
         public void setCoordinate(string coords, string team)

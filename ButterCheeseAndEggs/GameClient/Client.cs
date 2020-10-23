@@ -28,6 +28,9 @@ namespace GameClient
         #endregion
 
         #region protocol codes
+        /*
+        *  The following attributes are made for the message protocol.
+        */
         public static string chatmessageCode = "CHMS";
         public static string usernameCode = "USRN";
         public static string disconnectCode = "DCNT";
@@ -238,6 +241,9 @@ namespace GameClient
         #endregion
 
         #region coordinateHandling
+        /*
+        *  The following method fills in all the possible coordinates in a list.
+        */
         public void fillCoordinates()
         {
             int i = 11;

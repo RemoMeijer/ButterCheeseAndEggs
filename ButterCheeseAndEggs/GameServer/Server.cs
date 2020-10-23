@@ -26,6 +26,9 @@ namespace GameServer
         #endregion
 
         #region protocol codes
+        /*
+         *  The following attributes are made for the message protocol.
+         */
         public static string disconnectCode = "DCNT";
         public static string chatmessageCode = "CHMS";
         public static string idCode = "IDEN";
@@ -86,6 +89,9 @@ namespace GameServer
             }
         }
 
+        /*
+        *  The following generates an ID for each client.
+        */
         public string generateID()
         {
             while (true)
@@ -99,6 +105,9 @@ namespace GameServer
             }
         }
 
+        /*
+        *  The following method checks the generated ID to see if it's not being used already.
+        */
         public async Task<bool> checkID(string id)
         {
             foreach (ServerClient client in this.clients)
@@ -159,6 +168,10 @@ namespace GameServer
         #endregion
 
         #region sending 
+        /*
+         *  The following method sends a message to all clients but also makes sure
+         *  the message is not sent to the serverclient it came from       
+         */
         public void SendToAllClients(string message, ServerClient serverClient)
         {
             string key = serverClient.getID();
@@ -228,6 +241,10 @@ namespace GameServer
             this.addClientToQueue(client);
         }
 
+        /*
+         *  The following method checks the amount of people in queue and calls
+         *  the createGame() method when there are enough people in queue to create a game.        
+         */
         public void inQueue()
         {
             if (this.clientsInQueue.Count >= 2)
@@ -240,6 +257,10 @@ namespace GameServer
 
         }
 
+        /*
+        *  The following method creates a game and sends the corresponding messages 
+        *  the serverclients. 
+        */
         public void createGame(ServerClient client1, ServerClient client2)
         {                     
                 Game game = new Game(client1,client2);
