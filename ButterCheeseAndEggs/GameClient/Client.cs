@@ -151,6 +151,9 @@ namespace GameClient
                 }
                 catch(Exception e)
                 {
+                    Console.WriteLine(e.StackTrace);
+                    Console.WriteLine(e.Message);
+
                     Console.WriteLine("Couldnt connect to server!");
                     disconnect();
                 }
@@ -194,8 +197,8 @@ namespace GameClient
 
         public void setCoord(string message)
         {
-            string coords = message.Substring(0, 2);
-            string team = message.Substring(2, 1);
+            string coords = message.Substring(0, 2);          
+            string team = message.Substring(2, 1);             
             this.GUI.setCoordinate(coords, team);
         }
 
@@ -261,6 +264,7 @@ namespace GameClient
 
         public void clearAllCoordinates()
         {
+            this.inGame = false;
             foreach(string key in this.coordinates.Keys)
             {                
                 this.GUI.inputSet(key, "");

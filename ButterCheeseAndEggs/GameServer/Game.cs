@@ -17,6 +17,7 @@ namespace GameServer
         private int[][] player2Coordinates;
         public ServerClient player1 { get; set; }
         public ServerClient player2 { get; set; }
+        private bool tie;
         #endregion
 
         #region startup
@@ -27,6 +28,7 @@ namespace GameServer
             this.player1TurnNumber = 0;
             this.player2TurnNumber = 0;
             this.player1Turn = true;
+            this.tie = false;
             this.player2Turn = false;
             this.gameWon = false;
             //makes the arrays for the coordinates for the players
@@ -59,14 +61,20 @@ namespace GameServer
         #region server communication
         public void SendWinnerAndLoser(ServerClient loser, ServerClient winner)
         {
-            winner.Send(Server.outcomeCode, "winner");
-            loser.Send(Server.outcomeCode, "loser");
+            if (!this.tie)
+            {
+                winner.Send(Server.outcomeCode, "winner");
+                loser.Send(Server.outcomeCode, "loser");
+            }
         }
 
         public void SendBothTies()
         {
-            this.player1.Send(Server.outcomeCode, "tie");
-            this.player2.Send(Server.outcomeCode, "tie");
+            if (this.tie)
+            {
+                this.player1.Send(Server.outcomeCode, "tie");
+                this.player2.Send(Server.outcomeCode, "tie");
+            }
         }
 
         public void sendCoord(ServerClient client, string message) 
@@ -97,7 +105,9 @@ namespace GameServer
         public void checkForWinner(int[] coordinate)
         {
             Boolean[] a = receive(coordinate);
-           
+            if (a != null)
+            {
+
                 if (a[0] && a[2])
                 {
                     SendWinnerAndLoser(player1, player2);
@@ -106,6 +116,7 @@ namespace GameServer
                 {
                     SendWinnerAndLoser(player2, player1);
                 }
+            }
             
 
         }
@@ -127,9 +138,12 @@ namespace GameServer
                     player1Turn = false;
                     player2Turn = true;                 
                 }
-                if(player1TurnNumber >= 5 && gameWon == false)               
+                if(player1TurnNumber >= 5 && gameWon == false)
+                {
+                    this.tie = true;
                     SendBothTies();
-                
+                }
+
                 {
 
                 }

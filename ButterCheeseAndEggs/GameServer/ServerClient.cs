@@ -77,10 +77,10 @@ namespace GameServer
                         case "DCNT": //disconnect
                             disconnect();
                             break;
-                        case "CRDN":
+                        case "CRDN": //set coordinates
                             setCoords(message);
                             break;
-                        case "GORC":
+                        case "GORC": //set gameover
                             setGameOver();
                             break;
                     }

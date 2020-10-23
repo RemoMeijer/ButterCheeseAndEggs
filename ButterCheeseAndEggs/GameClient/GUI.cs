@@ -127,8 +127,9 @@ namespace GameClient
 
                     inputSet(coords,team);
 
-                    if (this.client.checkCoordinates())
+                    if (this.client.checkCoordinates())                   
                         this.client.clearAllCoordinates();
+                    
                 }
             }
         }
