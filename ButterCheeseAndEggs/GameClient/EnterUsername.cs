@@ -24,6 +24,7 @@ namespace GameClient
             Application.Run(this);
         }
 
+        #region events
         private void GoButton_Click(object sender, EventArgs e)
         {
             if(UsernameTextBox.Text != "")
@@ -40,5 +41,6 @@ namespace GameClient
             if (e.KeyCode == Keys.Enter)
                 GoButton_Click(null, null);
         }
+        #endregion
     }
 }

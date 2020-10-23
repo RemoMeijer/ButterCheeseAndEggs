@@ -170,7 +170,7 @@ namespace GameServer
         #region sending 
         /*
          *  The following method sends a message to all clients but also makes sure
-         *  the message is not sent to the serverclient it came from       
+         *  the message is not sent to the serverclient it came from.       
          */
         public void SendToAllClients(string message, ServerClient serverClient)
         {

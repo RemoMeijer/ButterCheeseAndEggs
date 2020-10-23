@@ -11,12 +11,10 @@ namespace GameServer.Tests
     public class ServerTests
     {
         private Server server;
-        private Game game;
 
         public ServerTests()
         {
             this.server = new Server();
-            this.game = new Game();
 
         }
         [TestMethod()]
