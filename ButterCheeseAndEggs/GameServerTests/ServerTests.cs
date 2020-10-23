@@ -17,15 +17,18 @@ namespace GameServer.Tests
         {
             this.server = new Server();
             this.game = new Game();
-            
+
         }
         [TestMethod()]
         public void generateIDTest()
         {
-            this.server = new Server();
             Assert.AreEqual(4, server.generateID().Length);
         }
 
-       
+        [TestMethod()]
+        public void addChatlogTest()
+        {
+            server.addChatlog("Test"); 
+        }
     }
 }
