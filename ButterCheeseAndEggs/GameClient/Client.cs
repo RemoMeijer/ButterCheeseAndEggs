@@ -151,10 +151,7 @@ namespace GameClient
                 }
                 catch(Exception e)
                 {
-                    Console.WriteLine(e.StackTrace);
-                    Console.WriteLine(e.Message);
-
-                    Console.WriteLine("Couldnt connect to server!");
+                    Console.WriteLine("Disconnected!");
                     disconnect();
                 }
 
