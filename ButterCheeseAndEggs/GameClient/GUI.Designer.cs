@@ -120,9 +120,9 @@
             this.winsLabel.Font = new System.Drawing.Font("Segoe UI", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.winsLabel.Location = new System.Drawing.Point(13, 75);
             this.winsLabel.Name = "winsLabel";
-            this.winsLabel.Size = new System.Drawing.Size(81, 37);
+            this.winsLabel.Size = new System.Drawing.Size(103, 37);
             this.winsLabel.TabIndex = 5;
-            this.winsLabel.Text = "Wins:";
+            this.winsLabel.Text = "Wins: 0";
             // 
             // lossesLabel
             // 
@@ -130,9 +130,9 @@
             this.lossesLabel.Font = new System.Drawing.Font("Segoe UI", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.lossesLabel.Location = new System.Drawing.Point(13, 109);
             this.lossesLabel.Name = "lossesLabel";
-            this.lossesLabel.Size = new System.Drawing.Size(99, 37);
+            this.lossesLabel.Size = new System.Drawing.Size(121, 37);
             this.lossesLabel.TabIndex = 6;
-            this.lossesLabel.Text = "Losses:";
+            this.lossesLabel.Text = "Losses: 0";
             // 
             // usernameLabel
             // 
@@ -381,9 +381,9 @@
             this.tiesLabel.Font = new System.Drawing.Font("Segoe UI", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.tiesLabel.Location = new System.Drawing.Point(12, 141);
             this.tiesLabel.Name = "tiesLabel";
-            this.tiesLabel.Size = new System.Drawing.Size(76, 37);
+            this.tiesLabel.Size = new System.Drawing.Size(91, 37);
             this.tiesLabel.TabIndex = 14;
-            this.tiesLabel.Text = "Ties: ";
+            this.tiesLabel.Text = "Ties: 0";
             // 
             // GUI
             // 
