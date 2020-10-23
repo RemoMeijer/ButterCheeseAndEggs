@@ -36,8 +36,11 @@ namespace GameServer
         {
             try
             {
-                streamWriter.WriteLine(type+this.ID+message);
-                streamWriter.Flush();
+                if (this.connected != false)
+                {
+                    streamWriter.WriteLine(type + this.ID + message);
+                    streamWriter.Flush();
+                }
             }
             catch {
                 Console.WriteLine("Failed to send");

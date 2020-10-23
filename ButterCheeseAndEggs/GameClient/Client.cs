@@ -91,10 +91,17 @@ namespace GameClient
         #region receiving and sending
         public void Send(string type, string message)
         {
-            if (this.connected != false)
+            try
             {
-                streamWriter.WriteLine(type+this.ID+message);
-                streamWriter.Flush();
+                if (this.connected != false)
+                {
+                    streamWriter.WriteLine(type + this.ID + message);
+                    streamWriter.Flush();
+                }
+            }
+            catch
+            {
+                Console.WriteLine("Failed to send");
             }
         }
 
