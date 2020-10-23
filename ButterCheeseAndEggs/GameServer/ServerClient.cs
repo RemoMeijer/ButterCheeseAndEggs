@@ -85,8 +85,7 @@ namespace GameServer
                 }
                 catch(Exception e)
                 {
-                    Console.WriteLine(e.Message);
-                    Console.WriteLine("Couldnt connect!");
+                    disconnect();
 
                 }
             }
@@ -118,11 +117,13 @@ namespace GameServer
 
         public void disconnect()
         {
+            this.server.removeClientFromClients(this);
+            this.server.removeClientFromQueue(this);
             this.streamReader.Close();
             this.streamWriter.Close();
             this.client.Close();
             this.connected = false;
-            Console.WriteLine(this.ID + " has disonnected");
+            Console.WriteLine(this.username + " - " + this.ID + " - disconnected");
         }
 
     }

@@ -119,16 +119,20 @@ namespace GameClient
                         case "IDEN": //ID set
                             setID(message);
                             break;
-                        case "STIG":
+
+                        case "STIG": //set game
                             setInGame(message);
                             break;
-                        case "STTN":
+
+                        case "STTN": //set turn
                             setTurn(message);
                             break;
-                        case "CRDN":
+
+                        case "CRDN": //set coordinate
                             setCoord(message);
                             break;
-                        case "OUTC":
+
+                        case "OUTC": //set outcome
                             setOutcome(message);
                             break;
                         
@@ -137,10 +141,7 @@ namespace GameClient
                 }
                 catch(Exception e)
                 {
-                    Console.WriteLine(e.Message);
-                    Console.WriteLine(e.StackTrace);
-
-                    Console.WriteLine("Couldnt connect!");
+                    Console.WriteLine("Couldnt connect to server!");
                     disconnect();
                 }
 
@@ -267,6 +268,7 @@ namespace GameClient
 
         public void disconnect()
         {
+            this.Send(Client.disconnectCode, "");
             this.streamReader.Close();
             this.streamWriter.Close();
             this.server.Close();

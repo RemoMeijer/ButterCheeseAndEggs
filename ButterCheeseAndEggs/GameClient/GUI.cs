@@ -177,7 +177,6 @@ namespace GameClient
 
         public void sendCoordinate(string input, string team)
         {
-            Console.WriteLine("TEAM: "+team);
             if(this.client.turn == true && this.client.inGame == true)
                 this.client.Send(Client.coordinateCode, input + team);
         }

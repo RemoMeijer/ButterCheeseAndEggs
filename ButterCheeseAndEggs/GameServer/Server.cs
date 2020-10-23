@@ -123,7 +123,7 @@ namespace GameServer
         {
             this.IDandUsername.Add(id, username);
 
-            Console.WriteLine(username + " - "+id+ "- connected");
+            Console.WriteLine(username + " - "+id+ " - connected");
 
             inQueue();
 
@@ -141,16 +141,10 @@ namespace GameServer
             while (serverOn)
             {
                 string input = Console.ReadLine();
-                switch (input)
+                if(input == "clear")
                 {
-                    case "quit":
-                        stopServer();
-                        Console.WriteLine("Goodbye");
-                        break;
-                    case "clear":
-                        clearChatlogs();
-                        Console.WriteLine("Chaglogs cleared");
-                        break;
+                    clearChatlogs();
+                    Console.WriteLine("Chatlogs cleared");
                 }
             }
         }
@@ -174,7 +168,7 @@ namespace GameServer
 
             addChatlog(messageToSend);
 
-            Console.WriteLine("Sending to all clients: "+messageToSend);
+            Console.WriteLine(messageToSend);
 
             foreach (ServerClient client in this.clients)
             {
