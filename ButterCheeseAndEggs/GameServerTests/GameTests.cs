@@ -15,6 +15,7 @@ namespace GameServer.Tests
         {
             this.game = new Game();
         }
+
         [TestMethod()]
         public void receiveTest()
         {
