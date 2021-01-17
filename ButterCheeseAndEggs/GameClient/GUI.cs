@@ -240,5 +240,10 @@ namespace GameClient
         {
 
         }
+
+        private void waitingLabel_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

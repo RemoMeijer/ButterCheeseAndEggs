@@ -63,30 +63,23 @@ namespace GameServer
         public void start()
         {
             this.listener.Start();
-            Thread thread = new Thread(AcceptClients);
-            thread.Start();
-
+            this.listener.BeginAcceptTcpClient(new AsyncCallback(AcceptClients), null);
             waitForServerInput();
         }
         #endregion       
 
         #region accepting clients
-        public void AcceptClients()
-        {
-            Console.WriteLine("Waiting for people to join...");
-
-            while (serverOn)
-            {
-
-                TcpClient client = listener.AcceptTcpClient();
-                ServerClient serverClient = new ServerClient(client,generateID(),this);
+        public void AcceptClients(IAsyncResult ar)
+        {       
+                TcpClient client = listener.EndAcceptTcpClient(ar);
+                ServerClient serverClient = new ServerClient(client, generateID(), this);
                 this.clientsInQueue.Add(serverClient);
                 this.clients.Add(serverClient);
 
                 Thread thread = new Thread(handleServerClient);
                 thread.Start(serverClient);
 
-            }
+                this.listener.BeginAcceptTcpClient(new AsyncCallback(AcceptClients), null);
         }
 
         /*
@@ -97,8 +90,7 @@ namespace GameServer
             while (true)
             {
                 string id = random.Next(1000, 9999)+"";
-                Task<bool> task = checkID(id);
-                if (!task.Result)
+                if (!checkID(id));
                 {
                     return id;
                 }
@@ -108,7 +100,7 @@ namespace GameServer
         /*
         *  The following method checks the generated ID to see if it's not being used already.
         */
-        public async Task<bool> checkID(string id)
+        public bool checkID(string id)
         {
             foreach (ServerClient client in this.clients)
             {
@@ -194,6 +186,7 @@ namespace GameServer
         {
             foreach(string message in this.chatlogs)
             {
+                Thread.Sleep(50);
                 client.Send(Server.chatmessageCode, message);
             }
         }
@@ -270,6 +263,8 @@ namespace GameServer
 
                 client1.setGame(game);
                 client2.setGame(game);
+
+                Thread.Sleep(500);  
 
                 client1.Send(Server.turnCode, "true");
                 client2.Send(Server.turnCode, "false");           

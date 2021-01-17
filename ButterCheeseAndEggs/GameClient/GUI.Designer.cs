@@ -272,6 +272,7 @@
             this.waitingLabel.Size = new System.Drawing.Size(291, 37);
             this.waitingLabel.TabIndex = 10;
             this.waitingLabel.Text = "Waiting for opponent...";
+            this.waitingLabel.Click += new System.EventHandler(this.waitingLabel_Click);
             // 
             // globalChatLabel
             // 

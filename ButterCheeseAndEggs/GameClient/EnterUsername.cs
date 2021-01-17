@@ -29,10 +29,11 @@ namespace GameClient
         {
             if(UsernameTextBox.Text != "")
             {
-                Thread clientStartThread = new Thread(() => this.client.start(UsernameTextBox.Text));
-                clientStartThread.Start();
-                
                 this.Hide();
+                this.client.start(UsernameTextBox.Text);
+                //Thread clientStartThread = new Thread(() => this.client.start(UsernameTextBox.Text));
+                //clientStartThread.Start();
+                
             }
         }
 

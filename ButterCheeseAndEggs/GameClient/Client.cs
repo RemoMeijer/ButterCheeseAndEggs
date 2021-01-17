@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net.Sockets;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 
 namespace GameClient
@@ -20,7 +21,11 @@ namespace GameClient
         private int wins;
         private int losses;
         private int ties;
+        private static byte[] buffer = new byte[1024];
+        private static string totalBuffer;
         private string ID;
+        private NetworkStream networkStream;
+
         public string teamString { get; set; }
         public bool turn { get; set; }
         public bool inGame { get; set; }
@@ -50,6 +55,7 @@ namespace GameClient
             this.server = new TcpClient("127.0.0.1", 1337);
             this.streamWriter = new StreamWriter(server.GetStream(), Encoding.ASCII, -1, true);
             this.streamReader = new StreamReader(server.GetStream(), Encoding.ASCII);
+            this.networkStream = server.GetStream();
             this.connected = true;
             this.inGame = false;
             this.turn = false;
@@ -64,8 +70,9 @@ namespace GameClient
         public void login()
         {
             this.GUI = new GUI(this);
-            Thread enterUsernameThread = new Thread(startEnterUsername);
-            enterUsernameThread.Start();
+            startEnterUsername();
+            //Thread enterUsernameThread = new Thread(startEnterUsername);
+            //enterUsernameThread.Start();
         }
 
         public void start(string username)
@@ -76,7 +83,9 @@ namespace GameClient
             Thread GUIThread = new Thread(startGUI);
             GUIThread.Start();
 
-            Receive();           
+
+            networkStream.BeginRead(buffer, 0, buffer.Length, new AsyncCallback(OnRead), null);
+            //Receive();           
         }
 
         public void startEnterUsername()
@@ -108,14 +117,30 @@ namespace GameClient
             }
         }
 
-        
-        public void Receive()
+        private void OnRead(IAsyncResult ar)
         {
-            while (connected)
+            try
             {
+                int receivedBytes = networkStream.EndRead(ar);
+                string receivedText = System.Text.Encoding.ASCII.GetString(buffer, 0, receivedBytes);
+                receivedText = receivedText.Trim();
+
+                Receive(receivedText);
+
+                networkStream.BeginRead(buffer, 0, buffer.Length, new AsyncCallback(OnRead), null);
+            } catch
+            {
+                Console.WriteLine("Disconnected!");
+                disconnect();
+            }
+        }
+
+
+        public void Receive(string received)
+        {        
                 try
                 {
-                    string received = this.streamReader.ReadLine();
+                    //string received = this.streamReader.ReadLine();
                     string type = received.Substring(0, 4);
                     string ID = received.Substring(4, 4);
                     string message = received.Substring(8);
@@ -151,18 +176,19 @@ namespace GameClient
                 }
                 catch(Exception e)
                 {
+
                     Console.WriteLine("Disconnected!");
                     disconnect();
                 }
 
-            }
+            
         }
         #endregion
 
         #region setters
         public void setID(string ID)
         {
-            this.ID = ID;
+            this.ID = ID;           
             this.Send(Client.usernameCode, username);
 
         }
@@ -288,6 +314,7 @@ namespace GameClient
         public void disconnect()
         {
             this.Send(Client.disconnectCode, "");
+            this.networkStream.Close();
             this.streamReader.Close();
             this.streamWriter.Close();
             this.server.Close();
